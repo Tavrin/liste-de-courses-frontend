@@ -13,7 +13,7 @@ Vue.config.productionTip = false
 Vue.use({
   install (Vue) {
   Vue.prototype.$api = axios.create({
-    baseURL: 'http://192.168.43.72:8000/'
+    baseURL: 'api.clearlist.fr/'
   })
 }
 })
