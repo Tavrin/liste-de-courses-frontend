@@ -37,8 +37,10 @@ export default {
   },
   methods:{
       handleSubmit(){
+         
           this.isLoading = true;
           this.error="";
+          this.$store.commit("setError",'')
 
             this.$api
                 .post("/login",{
@@ -46,15 +48,23 @@ export default {
                         password: this.password
                 })
                 .then(response=>{
-                    console.log(response.headers.location)
-                    this.$emit('user-authenticated', response.headers.location);
+                    // console.log(response)
+                    document.cookie = `token=${response.data.token}; max-age=3600`
+                    var userLocation =  response.data.user.location;
+                    localStorage.user =userLocation;
+                    this.$store.commit("setCurrentUser", userLocation)
+                    this.$emit('user-authenticated', userLocation);
+                    // console.log(response.data.user.location)
                         this.email = '';
                         this.password = '';
                 })
                 .catch(error=>{
                     console.log(error);
-                    if(error.response.data.error){
-                        this.error = error.response.data.error;
+                    if(error.response.data.message){
+                        this.error = error.response.data.message;
+                        
+                         this.$store.commit("setError",error.response.data.message)
+                          console.log(this.$store.state.error)
                     }else{
                         this.error="Erreur serveur";
                     }
