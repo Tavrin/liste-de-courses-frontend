@@ -13,7 +13,7 @@ Vue.config.productionTip = false
 Vue.use({
   install (Vue) {
   Vue.prototype.$api = axios.create({
-    baseURL: 'api.clearlist.fr/'
+    baseURL: 'https://api.clearlist.fr/'
   })
 }
 })
